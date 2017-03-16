@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include "socket.h"
+#include "signaux.h"
+#include "split.h"
+
+int main ()
+{
+	const char * message ="      _n____n__\n     /         \\---||--<\n    /___________\n    _|____|____|_\n    _|____|____|_\n     |    |    |   \n    --------------\n    | || || || ||\\ \n    | || || || || \\++++++++------<\n    ===============\n    |   |  |  |   |\n   (| O | O| O| O |)\n   |   |   |   |   |\n  (| O | O | O | O |)\n   |   |   |   |    |\n (| O |  O | O  | O |)\n  |   |    |    |    |\n (| O |  O |  O |  O |)\n ======================\n";
+
+	int socket_s = creer_serveur(8080);
+	if(socket_s == -1)
+	{
+		perror("creer_serveur");
+		return -1;
+	}
+
+	initialiser_signaux();
+
+	while(1){
+
+		//int nb ;
+		char buffer[256];
+		int acc = accept(socket_s, NULL, NULL);
+		if(acc == -1){
+			perror("accept");
+			return -1;
+		}
+		
+		if(fork() == 0)
+		{
+			FILE *client;
+			client = fdopen(acc, "w+");
+			if(client == NULL)
+			{
+				perror("fdopen");		
+			}
+
+			fprintf(client, message);
+
+			while(fgets(buffer, 256, client) != NULL)
+			{
+				//fprintf(client, "%s %s", "<tardis>", buffer);
+				char **mots = split(buffer, ' ');
+
+				if(nbMots(buffer) == 3 && strcmp(mots[0], "GET") == 0)
+					printf("Contient 3 mots + GET\n");
+				else
+					printf("Probleme get ou nb mots \n");
+				//printf("Donnees envoyÃ©es par le client : %s", buffer);
+
+			}
+			fclose(client);
+			exit(0);
+		}else
+			close(acc);
+	}
+	return 0;
+}
+

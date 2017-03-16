@@ -1,0 +1,6 @@
+socket.o: socket.c lib.h
+client.o: client.c lib.h
+traitement.o: traitement.c lib.h
+signaux.o: signaux.c lib.h
+checking.o: checking.c lib.h
+main.o: main.c lib.h

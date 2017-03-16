@@ -1,0 +1,24 @@
+CHAPITRE III :
+
+1. bind : Address already in use
+   creer_serveur : Address already in use
+
+2.Le message de bienvenue ne s'affiche pas et le client est coupé.
+
+3.Nous ne traitons que les IPV4.
+
+4.Le second client est en attente car la fonction accept est hors de la seconde boucle. 
+
+CHAPITRE V :
+
+3. > GET http://localhost:8080/ HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.45.0
+> Accept: */*
+> Proxy-Connection: Keep-Alive
+
+4.	GET : methode	
+	http://localhost:8080/ : ressource
+	HTTP/1.1 : version	 
+	
+
